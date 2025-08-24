@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +9,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/posts', function() {
-    return "Hello there, it works";
-});
+// register a user 
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::apiResource('posts', PostController::class);
