@@ -11,5 +11,8 @@ Route::get('/user', function (Request $request) {
 
 // register a user 
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware(['auth:sanctum', 'throttle:api']);
 
 Route::apiResource('posts', PostController::class);
