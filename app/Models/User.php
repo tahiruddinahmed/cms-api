@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -68,4 +69,25 @@ class User extends Authenticatable
     public function comments(): HasMany {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * Admin
+     */
+    public function admin() {
+        return $this->hasMany(Admin::class);
+    }
+
+    public function isAdmin() {
+        $user = Auth::user();
+
+        // check is user exist in the admin table 
+        $isAdmin = Admin::where('user_id', $user->id)->first();
+        
+        if(!$isAdmin) {
+            return false;
+        }
+    
+        return true;
+    }
+
 }

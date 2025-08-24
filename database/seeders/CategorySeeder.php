@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,14 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory(15)->create();
+        $users = User::all();
+
+        for($i = 1; $i <= 15; $i++){
+            $user = $users->random();
+
+            Category::factory()->create([
+                'user_id' => $user->id
+            ]);
+        }
     }
 }
