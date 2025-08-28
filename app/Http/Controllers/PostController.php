@@ -28,12 +28,14 @@ class PostController extends Controller
 
         $data = $request->validate([
             'title' => 'required|string|min:10|max:255',
-            'post_img' => 'required|string|',
+            'post_img' => 'required|image|mimes:jpg,png,jpeg,webp|max:200',
             'content' => 'required',
             'status' => 'required',
             'category_id' => 'required'
         ]);
 
+        // upload the image in the storage public directory 
+        $data['post_img'] = $request->file('post_img')->store('thumbnails');
         
         $post = Post::create([
             ...$data,
@@ -61,11 +63,15 @@ class PostController extends Controller
 
         $data = $request->validate([
             'title' => 'required|string|min:10|max:255',
-            'post_img' => 'required|string|',
+            'post_img' => 'sometimes|image|mimes:jpg,png,jpeg,webp|max:200',
             'content' => 'required',
             'status' => 'required',
             'category_id' => 'required'
         ]);
+
+        if($request->hasFile('post_img')) {
+            $data['post_img'] = $request->file('post_img')->store('thumbnails'); 
+        }
 
         $post->update([
             ...$data,
